@@ -37,8 +37,28 @@ class Propellor(object):
 
 
 class Copter(object):
-    """docstring for Copter."""
-    def __init__(self, arg):
-        self.arg = arg
+    """Abstract Class for Drones with Propellors"""
+    def __init__(self, wings, gravity = 9.81, b = 0.0245):
+        self.wings = wings
+        self.g = gravity
+        self.b = b
+        self.thread = None
+        self.ode =  scipy.integrate.ode(self.state_dot).set_integrator('vode',nsteps=500,method='bdf')
+        self.time = datetime.datetime.now()
+        # Use a dictionary to store information about the Copters before init
+        for key in self.wings:
+            self.wings[key]['state'] = np.zeros(12)
+            self.wings[key]['state'][0:3] = self.wings[key]['position']
+            self.wings[key]['state'][6:9] = self.wings[key]['orientation']
+            self.setupWings(key)
+            # From Quadrotor Dynamics and Control by Randal Beard
+            ixx=((2*self.wings[key]['weight']*self.wings[key]['r']**2)/5)+(2*self.wings[key]['weight']*self.wings[key]['L']**2)
+            iyy=ixx
+            izz=((2*self.wings[key]['weight']*self.wings[key]['r']**2)/5)+(4*self.wings[key]['weight']*self.wings[key]['L']**2)
+            self.wings[key]['I'] = np.array([[ixx,0,0],[0,iyy,0],[0,0,izz]])
+            self.wings[key]['invI'] = np.linalg.inv(self.wings[key]['I'])
+        self.run = True
 
-        
+    def setupWings(self,key,num_wings):
+        for i in range(num_wings):
+        self.wings[key]['m' + str(i+1)] = Propeller(self.wings[key]['prop_size'][0],self.wings[key]['prop_size'][1])

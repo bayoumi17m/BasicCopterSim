@@ -41,9 +41,4 @@ class Copter(object):
     def __init__(self, arg):
         self.arg = arg
 
-
-class QuadCopter(Copter):
-    """docstring for QuadCopter."""
-    def __init__(self, arg):
-        super(QuadCopter, self).__init__()
-        self.arg = arg
+        

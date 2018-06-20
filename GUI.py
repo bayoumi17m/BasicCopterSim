@@ -10,15 +10,16 @@ class GUIQuad():
         self.quads = quads
         self.fig = plt.figure()
         self.ax = Axes3D.Axes3D(self.fig)
-        self.ax.set_xlim3d([-2.0, 2.0])
+        self.ax.set_xlim3d([-3.0, 3.0])
         self.ax.set_xlabel('X')
-        self.ax.set_ylim3d([-2.0, 2.0])
+        self.ax.set_ylim3d([-3.0, 3.0])
         self.ax.set_ylabel('Y')
         self.ax.set_zlim3d([0, 5.0])
         self.ax.set_zlabel('Z')
         self.ax.set_title('Quadcopter Simulation')
         self.init_plot()
         self.fig.canvas.mpl_connect('key_press_event', self.keypress_routine)
+        self.pos = []
 
     def rotation_matrix(self,angles):
         ct = math.cos(angles[0])
@@ -48,6 +49,10 @@ class GUIQuad():
             points[0,:] += self.quads[key]['position'][0]
             points[1,:] += self.quads[key]['position'][1]
             points[2,:] += self.quads[key]['position'][2]
+            self.pos.append(self.quads[key]['position'])
+            posArr = np.array(self.pos)
+            self.ax.plot(posArr[:, 0],posArr[:, 1],posArr[:, 2],label='path',linewidth=1,color ='green')
+            del posArr
             self.quads[key]['l1'].set_data(points[0,0:2],points[1,0:2])
             self.quads[key]['l1'].set_3d_properties(points[2,0:2])
             self.quads[key]['l2'].set_data(points[0,2:4],points[1,2:4])
@@ -78,4 +83,3 @@ class GUIQuad():
             x[0] -= 0.2
             x[1] -= 0.2
             self.ax.set_xlim3d(x)
-

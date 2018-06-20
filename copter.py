@@ -42,6 +42,7 @@ class Copter(object):
     """Abstract Class for Drones with Propellors"""
     def __init__(self, wings, num_wings, gravity = 9.81, b = 0.0245):
         self.wings = wings
+        self.num_wings = num_wings
         self.g = gravity
         self.b = b
         self.thread = None
@@ -53,7 +54,7 @@ class Copter(object):
             self.wings[key]['state'] = np.zeros(12)
             self.wings[key]['state'][0:3] = self.wings[key]['position']
             self.wings[key]['state'][6:9] = self.wings[key]['orientation']
-            self.setupWings(key,num_wings)
+            self.setupWings(key,self.num_wings)
             # From Quadrotor Dynamics and Control by Randal Beard
             ixx=((2*self.wings[key]['weight']*self.wings[key]['r']**2)/5)+ \
                 (2*self.wings[key]['weight']*self.wings[key]['L']**2)
@@ -103,7 +104,7 @@ class Copter(object):
 
 
     def set_motor_speeds(self,quad_name,speeds):
-        for i in range(num_wings):
+        for i in range(self.num_wings):
             self.wings[key]['m' + str(i+1)].set_speed(speeds[i])
 
 

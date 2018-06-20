@@ -103,37 +103,37 @@ class Copter(object):
             self.wings[key]['state'][2] = max(0,self.wings[key]['state'][2])
 
 
-    def set_motor_speeds(self,quad_name,speeds):
+    def set_motor_speeds(self,name,speeds):
         for i in range(self.num_wings):
-            self.wings[key]['m' + str(i+1)].set_speed(speeds[i])
+            self.wings[name]['m' + str(i+1)].set_speed(speeds[i])
 
 
-    def get_position(self,quad_name):
-        return self.wings[quad_name]['state'][0:3]
+    def get_position(self,name):
+        return self.wings[name]['state'][0:3]
 
 
-    def get_linear_rate(self,quad_name):
-        return self.wings[quad_name]['state'][3:6]
+    def get_linear_rate(self,name):
+        return self.wings[name]['state'][3:6]
 
 
-    def get_orientation(self,quad_name):
-        return self.wings[quad_name]['state'][6:9]
+    def get_orientation(self,name):
+        return self.wings[name]['state'][6:9]
 
 
-    def get_angular_rate(self,quad_name):
-        return self.wings[quad_name]['state'][9:12]
+    def get_angular_rate(self,name):
+        return self.wings[name]['state'][9:12]
 
 
-    def get_state(self,quad_name):
-        return self.wings[quad_name]['state']
+    def get_state(self,name):
+        return self.wings[name]['state']
 
 
-    def set_position(self,quad_name,position):
-        self.wings[quad_name]['state'][0:3] = position
+    def set_position(self,name,position):
+        self.wings[name]['state'][0:3] = position
 
 
-    def set_orientation(self,quad_name,orientation):
-        self.wings[quad_name]['state'][6:9] = orientation
+    def set_orientation(self,name,orientation):
+        self.wings[name]['state'][6:9] = orientation
 
 
     def get_time(self):

@@ -15,7 +15,7 @@ def SingleTest():
     GOALS = [(1,1,2),(1,-1,4),(-1,-1,2),(-1,1,4)]
     YAWS = [0,3.14,-1.54,1.54]
     # Define the quadcopters
-    QUADCOPTER={'q1':{'position':[1,0,4],'orientation':[0,0,0],'L':0.3,'r':0.1,'prop_size':[10,4.5],'weight':1.2}}
+    QUADCOPTER={'q1':{'position':[2,2,0],'orientation':[0,0,0],'L':0.3,'r':0.1,'prop_size':[10,4.5],'weight':1.2}}
     # Controller parameters
     CONTROLLER_PARAMETERS = {'Motor_limits':[4000,9000],
                         'Tilt_limits':[-10,10],
@@ -48,6 +48,42 @@ def SingleTest():
     quad.stop_thread()
     ctrl.stop_thread()
 
+def SingleTest2():
+    # Set goals to go to
+    GOALS = [(0.5,0,2),(0,0.5,2),(-0.5,0,2),(0,-0.5,2)]
+    # Define the quadcopters
+    QUADCOPTER={'q1':{'position':[0,0,0],'orientation':[0,0,0],'L':0.3,'r':0.1,'prop_size':[10,4.5],'weight':1.2}}
+    # Controller parameters
+    CONTROLLER_PARAMETERS = {'Motor_limits':[4000,9000],
+                        'Tilt_limits':[-10,10],
+                        'Yaw_Control_Limits':[-900,900],
+                        'Z_XY_offset':500,
+                        'Linear_PID':{'P':[2000,2000,7000],'I':[0.25,0.25,4.5],'D':[50,50,5000]},
+                        'Linear_To_Angular_Scaler':[1,1,0],
+                        'Yaw_Rate_Scaler':0.18,
+                        'Angular_PID':{'P':[22000,22000,1500],'I':[0,0,1.2],'D':[12000,12000,0]},
+                        }
+
+    # Catch Ctrl+C to stop threads
+    signal.signal(signal.SIGINT, signal_handler)
+    # Make objects for quadcopter, gui and controller
+    quad = copter.Quadcopter(QUADCOPTER)
+    gui_object = GUI.GUIQuad(quads=QUADCOPTER)
+    ctrl = Controller.Controller_Velocity(quad.get_state,quad.get_time,quad.set_motor_speeds,params=CONTROLLER_PARAMETERS,quad_identifier='q1')
+    # Start the threads
+    quad.start_thread(dt=QUAD_DYNAMICS_UPDATE,time_scaling=TIME_SCALING)
+    ctrl.start_thread(update_rate=CONTROLLER_DYNAMICS_UPDATE,time_scaling=TIME_SCALING)
+    # Update the GUI while switching between destination poitions
+    while(run==True):
+        for goal in GOALS:
+            ctrl.update_target(goal)
+            for i in range(150):
+                gui_object.quads['q1']['position'] = quad.get_position('q1')
+                gui_object.quads['q1']['orientation'] = quad.get_orientation('q1')
+                gui_object.update()
+    quad.stop_thread()
+    ctrl.stop_thread()
+
 def signal_handler(signal, frame):
     global run
     run = False
@@ -55,4 +91,4 @@ def signal_handler(signal, frame):
     sys.exit(0)
 
 if __name__ == "__main__":
-    SingleTest()
+    SingleTest2()

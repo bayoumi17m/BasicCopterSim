@@ -105,7 +105,7 @@ class Copter(object):
 
     def set_motor_speeds(self,name,speeds):
         for i in range(self.num_wings):
-            self.wings[name]['m' + str(i+1)].set_speed(speeds[i])
+            self.wings[name]['m' + str(i+1)].setSpeed(speeds[i])
 
 
     def get_position(self,name):

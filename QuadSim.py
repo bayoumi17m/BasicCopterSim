@@ -32,21 +32,21 @@ def SingleTest():
     # Make objects for quadcopter, gui and controller
     quad = copter.Quadcopter(QUADCOPTER)
     gui_object = gui.GUI(quads=QUADCOPTER)
-        ctrl = controller.Controller_Point2Point(quad.get_state,quad.get_time,quad.set_motor_speeds,params=CONTROLLER_PARAMETERS,quad_identifier='q1')
-        # Start the threads
-        quad.start_thread(dt=QUAD_DYNAMICS_UPDATE,time_scaling=TIME_SCALING)
-        ctrl.start_thread(update_rate=CONTROLLER_DYNAMICS_UPDATE,time_scaling=TIME_SCALING)
-        # Update the GUI while switching between destination poitions
-        while(run==True):
-            for goal,y in zip(GOALS,YAWS):
-                ctrl.update_target(goal)
-                ctrl.update_yaw_target(y)
-                for i in range(300):
-                    gui_object.quads['q1']['position'] = quad.get_position('q1')
-                    gui_object.quads['q1']['orientation'] = quad.get_orientation('q1')
-                    gui_object.update()
-        quad.stop_thread()
-        ctrl.stop_thread()
+    ctrl = controller.Controller_Point2Point(quad.get_state,quad.get_time,quad.set_motor_speeds,params=CONTROLLER_PARAMETERS,quad_identifier='q1')
+    # Start the threads
+    quad.start_thread(dt=QUAD_DYNAMICS_UPDATE,time_scaling=TIME_SCALING)
+    ctrl.start_thread(update_rate=CONTROLLER_DYNAMICS_UPDATE,time_scaling=TIME_SCALING)
+    # Update the GUI while switching between destination poitions
+    while(run==True):
+        for goal,y in zip(GOALS,YAWS):
+            ctrl.update_target(goal)
+            ctrl.update_yaw_target(y)
+            for i in range(300):
+                gui_object.quads['q1']['position'] = quad.get_position('q1')
+                gui_object.quads['q1']['orientation'] = quad.get_orientation('q1')
+                gui_object.update()
+    quad.stop_thread()
+    ctrl.stop_thread()
 
 def signal_handler(signal, frame):
     global run

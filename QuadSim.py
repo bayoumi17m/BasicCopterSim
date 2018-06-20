@@ -83,6 +83,7 @@ def SingleTest2():
                 gui_object.update()
     quad.stop_thread()
     ctrl.stop_thread()
+    sys.exit(0)
 
 def signal_handler(signal, frame):
     global run

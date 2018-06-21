@@ -55,9 +55,9 @@ def SingleTest2():
     t = np.arange(0., 2. * np.pi, 0.1)
     #x = 16*np.power(np.sin(t),3)
     #y = 13*np.cos(t) - 5*np.cos(2*t) - 2*np.cos(3*t) - np.cos(4*t)
-    x = 2*np.cos(t)
-    y = 2*np.sin(t)
-    z = t/t
+    x = np.cos(t)
+    y = np.sin(t)
+    z = np.zeros(len(t))+1
     GOALS = []
     for i in range(len(t)):
          GOALS.append( (x[i],y[i],z[i]) )

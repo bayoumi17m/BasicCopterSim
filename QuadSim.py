@@ -56,10 +56,11 @@ def SingleTest2():
     #x = 16*np.power(np.sin(t),3)
     #y = 13*np.cos(t) - 5*np.cos(2*t) - 2*np.cos(3*t) - np.cos(4*t)
     x = 2*np.cos(t)
-    y = 2*np.cos(t)
+    y = 2*np.sin(t)
+    z = t/t
     GOALS = []
     for i in range(len(t)):
-         GOALS.append( (x[i],y[i],0.5) )
+         GOALS.append( (x[i],y[i],z[i]) )
     # Define the quadcopters
     QUADCOPTER={'q1':{'position':[0,0,0],'orientation':[0,0,0],'L':0.3,'r':0.1,'prop_size':[10,4.5],'weight':1.2}}
     # Controller parameters

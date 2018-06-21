@@ -199,3 +199,8 @@ class Quadcopter(Copter):
         state_dot[10] = omega_dot[1]
         state_dot[11] = omega_dot[2]
         return state_dot
+
+class Tricopter(Copter):
+    """Docstring for the Tricopter"""
+    def __init__(self):
+        pass
